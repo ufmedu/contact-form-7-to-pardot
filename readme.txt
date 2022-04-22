@@ -23,4 +23,4 @@ Additional Settings:
 
 == Changelog ==
 
-[Changelog »](https://github.com/contact-form-7-to-pardot "Changelog")
+[Changelog »](https://github.com/ufmedu/contact-form-7-to-pardot "Changelog")
