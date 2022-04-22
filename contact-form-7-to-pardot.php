@@ -8,7 +8,7 @@ License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Network: true
 Plugin Name: Contact Form 7 to Pardot
-Plugin URI: https://github.com/contact-form-7-to-pardot
+Plugin URI: https://github.com/ufmedu/contact-form-7-to-pardot
 Requires at least: 5.6
 Requires PHP: 5.6
 Text Domain: contact-form-7-to-pardot
@@ -23,7 +23,7 @@ add_action('init', function(){
 	if(!class_exists('Puc_v4_Factory')){
 		require_once(plugin_dir_path(__FILE__) . 'includes/plugin-update-checker-4.11/plugin-update-checker.php');
 	}
-	Puc_v4_Factory::buildUpdateChecker('https://github.com/contact-form-7-to-pardot', __FILE__, 'contact-form-7-to-pardot');
+	Puc_v4_Factory::buildUpdateChecker('https://github.com/ufmedu/contact-form-7-to-pardot', __FILE__, 'contact-form-7-to-pardot');
 	$at_least_one = false;
 	$utm_params = ['utm_campaign', 'utm_content', 'utm_id', 'utm_medium', 'utm_source', 'utm_term'];
 	foreach($utm_params as $utm_param){
