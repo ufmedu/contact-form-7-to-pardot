@@ -12,7 +12,7 @@ Plugin URI: https://github.com/ufmedu/contact-form-7-to-pardot
 Requires at least: 5.6
 Requires PHP: 5.6
 Text Domain: contact-form-7-to-pardot
-Version: 0.4.22.2
+Version: 0.4.22.3
 */
 
 defined('ABSPATH') or die('Hi there! I\'m just a plugin, not much I can do when called directly.');
@@ -102,8 +102,8 @@ add_action('wpcf7_mail_sent', function($contact_form){
         }
 		$submission->set_response($message);
         $submission->set_status('aborted');
-		do_action('contact_form_7_to_pardot_failed', $contact_form, $response, $submission);
+		do_action('contact_form_7_to_pardot_failed', $url, $response, $body);
 		return;
     }
-	do_action('contact_form_7_to_pardot_sent', $contact_form, $response, $submission);
+	do_action('contact_form_7_to_pardot_sent', $url, $response, $body);
 });
