@@ -12,7 +12,7 @@ Plugin URI: https://github.com/ufmedu/contact-form-7-to-pardot
 Requires at least: 5.6
 Requires PHP: 5.6
 Text Domain: contact-form-7-to-pardot
-Version: 0.4.22.3
+Version: 0.4.29
 */
 
 defined('ABSPATH') or die('Hi there! I\'m just a plugin, not much I can do when called directly.');
