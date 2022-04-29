@@ -59,8 +59,13 @@ add_action('init', function(){
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 add_action('wpcf7_mail_sent', function($contact_form){
-	$url = $contact_form->pref('contact_form_7_to_pardot_endpoint_url');
-	if(!wpcf7_is_url($url)){
+	$url = $contact_form->additional_setting('contact_form_7_to_pardot_endpoint_url');
+	if(!$url){
+		return;
+	}
+	$scheme = wp_parse_url($url[0], PHP_URL_SCHEME);
+	$result = $scheme and in_array($scheme, wp_allowed_protocols(), true);
+	if(!$result){
 		return;
 	}
 	$submission = WPCF7_Submission::get_instance();
