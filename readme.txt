@@ -5,7 +5,7 @@ License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 5.6
 Requires PHP: 5.6
-Stable tag: 0.4.29
+Stable tag: 0.4.29.1
 Tags: contact-form-7-to-pardot
 Tested up to: 5.9.3
 
