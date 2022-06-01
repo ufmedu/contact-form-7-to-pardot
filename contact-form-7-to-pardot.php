@@ -12,18 +12,14 @@ Plugin URI: https://github.com/ufmedu/contact-form-7-to-pardot
 Requires at least: 5.6
 Requires PHP: 5.6
 Text Domain: contact-form-7-to-pardot
-Version: 0.4.29.2
+Version: 0.6.1
 */
 
 defined('ABSPATH') or die('Hi there! I\'m just a plugin, not much I can do when called directly.');
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-add_action('init', function(){
-	if(!class_exists('Puc_v4_Factory')){
-		require_once(plugin_dir_path(__FILE__) . 'includes/plugin-update-checker-4.11/plugin-update-checker.php');
-	}
-	Puc_v4_Factory::buildUpdateChecker('https://github.com/ufmedu/contact-form-7-to-pardot', __FILE__, 'contact-form-7-to-pardot');
+add_action('plugins_loaded', function(){
 	$at_least_one = false;
 	$utm_params = ['utm_campaign', 'utm_content', 'utm_id', 'utm_medium', 'utm_source', 'utm_term'];
 	foreach($utm_params as $utm_param){
@@ -58,6 +54,15 @@ add_action('init', function(){
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+add_action('setup_theme', function(){
+	if(!class_exists('Puc_v4_Factory')){
+		require_once(plugin_dir_path(__FILE__) . 'includes/plugin-update-checker-4.11/plugin-update-checker.php');
+	}
+	Puc_v4_Factory::buildUpdateChecker('https://github.com/ufmedu/contact-form-7-to-pardot', __FILE__, 'contact-form-7-to-pardot');
+});
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 add_action('wpcf7_mail_sent', function($contact_form){
 	$url = $contact_form->additional_setting('contact_form_7_to_pardot_endpoint_url');
 	if(!$url){
@@ -75,12 +80,23 @@ add_action('wpcf7_mail_sent', function($contact_form){
 	}
 	$body = $submission->get_posted_data();
 	$cookie_prefix = 'contact_form_7_to_pardot_';
+	$is_ufm = false;
+	if(false !== strpos(wp_parse_url(site_url(), PHP_URL_HOST), 'ufm.edu')){
+		$is_ufm = true;
+		$ufm_params = ['ufm_campaign', 'ufm_content', 'ufm_id', 'ufm_medium', 'ufm_source', 'ufm_term'];
+	}
 	$utm_params = ['utm_campaign', 'utm_content', 'utm_id', 'utm_medium', 'utm_source', 'utm_term'];
-	foreach($utm_params as $utm_param){
+	foreach($utm_params as $index => $utm_param){
+		$value = '';
 		if(isset($_COOKIE[$cookie_prefix . $utm_param . '_' . COOKIEHASH])){
-			$body[$utm_param] = $_COOKIE[$cookie_prefix . $utm_param . '_' . COOKIEHASH];
-		} else {
-			$body[$utm_param] = '';
+			$value = $_COOKIE[$cookie_prefix . $utm_param . '_' . COOKIEHASH];
+		}
+		if(!isset($body[$utm_param])){
+			$body[$utm_param] = $value;
+		}
+		if($is_ufm){
+			$ufm_param = $ufm_params[$index];
+			$body[$ufm_param] = $value; // raw
 		}
 	}
 	$body = apply_filters('contact_form_7_to_pardot_posted_data', $body, $contact_form, $submission);
